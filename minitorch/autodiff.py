@@ -180,7 +180,15 @@ class FunctionBase:
 
         """
         # TODO: Implement for Task 1.3.
-        raise NotImplementedError('Need to implement for Task 1.3')
+        # raise NotImplementedError('Need to implement for Task 1.3')
+        list_vwderiv = []
+        for i, var in enumerate(inputs):
+            print(i)
+            if not is_constant(var):
+                deriv = cls.backward(ctx, d_output)
+                print(deriv)
+                list_vwderiv.append(VariableWithDeriv(var, unwrap_tuple(deriv)))
+        return list_vwderiv
 
 
 def is_leaf(val):
