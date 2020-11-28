@@ -181,15 +181,14 @@ class FunctionBase:
         """
         # TODO: Implement for Task 1.3.
         # raise NotImplementedError('Need to implement for Task 1.3')
-        list_vwderiv = []
-        for i, var in enumerate(inputs):
-            print(i)
+        var_with_deriv = []
+        derivatives = cls.backward(ctx, d_output)
+        if not isinstance(derivatives, tuple): # more than 1 non const var
+            derivatives = wrap_tuple(derivatives)
+        for idx, var in enumerate(inputs):
             if not is_constant(var):
-                deriv = cls.backward(ctx, d_output)
-                print(deriv)
-                list_vwderiv.append(VariableWithDeriv(var, unwrap_tuple(deriv)))
-        return list_vwderiv
-
+                var_with_deriv.append(VariableWithDeriv(var, derivatives[idx]))
+        return var_with_deriv
 
 def is_leaf(val):
     return isinstance(val, Variable) and val.history.is_leaf()
