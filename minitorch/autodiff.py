@@ -1,5 +1,5 @@
 import uuid
-# import queue
+import queue
 
 
 def wrap_tuple(x):
@@ -212,5 +212,18 @@ def backpropagate(final_variable_with_deriv):
            and its derivative that we want to propagate backward to the leaves.
     """
     # TODO: Implement for Task 1.4.
-    raise NotImplementedError('Need to implement for Task 1.4')
-    # q = queue.Queue()
+    # raise NotImplementedError('Need to implement for Task 1.4')
+    q = queue.Queue()
+    q.put(final_variable_with_deriv)
+    while not q.empty():
+        variable_with_dev = q.get()
+        if is_leaf(variable_with_dev.variable):
+            variable_with_dev.variable._add_deriv(
+                variable_with_dev.deriv
+            )
+        else:
+            history = variable_with_dev.variable.history
+            derivs = history.backprop_step(variable_with_dev.deriv)
+            for deriv in derivs:
+                if not is_constant(deriv):
+                    q.put(deriv)
