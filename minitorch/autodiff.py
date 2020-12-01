@@ -1,4 +1,5 @@
 import uuid
+# import queue
 
 
 def wrap_tuple(x):
@@ -183,12 +184,13 @@ class FunctionBase:
         # raise NotImplementedError('Need to implement for Task 1.3')
         var_with_deriv = []
         derivatives = cls.backward(ctx, d_output)
-        if not isinstance(derivatives, tuple): # more than 1 non const var
+        if not isinstance(derivatives, tuple):  # more than 1 non const var
             derivatives = wrap_tuple(derivatives)
         for idx, var in enumerate(inputs):
             if not is_constant(var):
                 var_with_deriv.append(VariableWithDeriv(var, derivatives[idx]))
         return var_with_deriv
+
 
 def is_leaf(val):
     return isinstance(val, Variable) and val.history.is_leaf()
@@ -211,3 +213,4 @@ def backpropagate(final_variable_with_deriv):
     """
     # TODO: Implement for Task 1.4.
     raise NotImplementedError('Need to implement for Task 1.4')
+    # q = queue.Queue()
