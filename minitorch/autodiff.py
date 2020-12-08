@@ -216,14 +216,16 @@ def backpropagate(final_variable_with_deriv):
     q = queue.Queue()
     q.put(final_variable_with_deriv)
     while not q.empty():
-        variable_with_dev = q.get()
-        if is_leaf(variable_with_dev.variable):
-            variable_with_dev.variable._add_deriv(
-                variable_with_dev.deriv
+        variable_with_deriv = q.get()
+        if is_leaf(variable_with_deriv.variable):
+            variable_with_deriv.variable._add_deriv(
+                variable_with_deriv.deriv
             )
         else:
-            history = variable_with_dev.variable.history
-            derivs = history.backprop_step(variable_with_dev.deriv)
-            for deriv in derivs:
-                if not is_constant(deriv):
-                    q.put(deriv)
+            # print("{} is not a leaf".format(variable_with_dev.variable.name))
+            history = variable_with_deriv.variable.history
+            assert history is not None
+            vars_with_derivs = history.backprop_step(variable_with_deriv.deriv)
+            for v in vars_with_derivs:
+                if not is_constant(v.variable):
+                    q.put(v)

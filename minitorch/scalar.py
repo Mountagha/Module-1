@@ -270,13 +270,16 @@ class Sigmoid(ScalarFunction):
     def forward(ctx, a):
         # TODO: Implement for Task 1.2.
         # raise NotImplementedError('Need to implement for Task 1.2')
+        ctx.save_for_backward(a)
         return operators.sigmoid(a)
 
     @staticmethod
     def backward(ctx, d_output):
         # TODO: Implement for Task 1.4.
         # raise NotImplementedError('Need to implement for Task 1.4')
-        return operators.sigmoid(d_output) * (1 - operators.sigmoid(d_output))
+        a = ctx.saved_values
+        # maybe I should use central difference here
+        return d_output * operators.sigmoid(a) * (1.0 - operators.sigmoid(a))
 
 
 class ReLU(ScalarFunction):
@@ -318,11 +321,12 @@ def derivative_check(f, *scalars):
     for x in scalars:
         x.requires_grad_(True)
     out = f(*scalars)
+    print(out)
     out.backward()
 
     vals = [v for v in scalars]
 
     for i, x in enumerate(scalars):
         check = central_difference(f, *vals, arg=i)
-        print(x.derivative, check)
+        print(check.data, x.derivative)
         np.testing.assert_allclose(x.derivative, check.data, 1e-2, 1e-2)
