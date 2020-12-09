@@ -222,7 +222,6 @@ def backpropagate(final_variable_with_deriv):
                 variable_with_deriv.deriv
             )
         else:
-            # print("{} is not a leaf".format(variable_with_dev.variable.name))
             history = variable_with_deriv.variable.history
             assert history is not None
             vars_with_derivs = history.backprop_step(variable_with_deriv.deriv)
