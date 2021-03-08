@@ -11,7 +11,7 @@ The project is organized into 5 modules. Each module is build upon the precedent
 * [Module-3](https://github.com/Mountagha/Module-3)
 * [Module-4](https://github.com/Mountagha/Module-4)
 
-This is [Module-1](https://github.com/Mountagha/Module-1) and it is focus on auto-differentiation and backpropagation.
+This is [Module-1](https://github.com/Mountagha/Module-1) and it is focused on auto-differentiation and backpropagation.
 
 ### Notes
 
